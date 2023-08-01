@@ -14,6 +14,11 @@ ENDTOKEN = "~EOF"
 
 MAXVOTES = 1
 
+
+
+#?
+TWEETCOL = "Tweet"
+CLASSCOL = "class"
 #FIX
 MAXCOL = 2
 

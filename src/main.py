@@ -58,12 +58,13 @@ def main():
     validateToken(constants.CREDS,constants.SCOPES)
 
     sheet = Sheet(constants.SPREADSHEET_ID, range_values="Sheet1")
-    # print(sheet.data)
+    # sheet.data.sort_values(by=['class'])
+    print(sheet.data)
     # sheet.update_with_class()
 
     print("running bot");
 
-    bot.run(sheet)
+    # bot.run(sheet)
 
 if __name__ == "__main__":
     main()
