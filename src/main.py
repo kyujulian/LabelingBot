@@ -59,16 +59,16 @@ def main():
 
     sheet = Sheet(constants.SPREADSHEET_ID, range_values="Sheet1")
     # sheet.data.sort_values(by=['class'])
-    print(sheet.data)
-    sheet.add_and_write('THIS A TWEET', 'positive')
-    sheet.update_sheet()
+    # print(sheet.data)
+    # sheet.add_and_write('THIS A TWEET', 'positive')
+    # sheet.update_sheet()
     # sheet.update_with_class()
 
-    print("AFTERAFTERAFTER")
-    print(sheet.data)
+    # print("AFTERAFTERAFTER")
+    # print(sheet.data)
     print("running bot");
 
-    # bot.run(sheet)
+    bot.run(sheet)
 
 if __name__ == "__main__":
     main()

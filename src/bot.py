@@ -56,6 +56,9 @@ def run(sheet):
     async def button(ctx):
 
         tweet = sheet.get_unclassified()
+        if(tweet == None):
+            await ctx.send("Todos os tweets foram classificados!")
+            return
         view = ButtonView(tweet=tweet, sheets=sheet)
         await ctx.send(f"Classifique o tweet: \n {tweet} \n ", view=view)
         # await ctx.send(view=view)
@@ -67,9 +70,7 @@ def run(sheet):
 
 class ButtonView(discord.ui.View):
 
-    
-
-    def __init__(self, classes = constants.CLASSES, sheets = None, tweet = None):
+    def __init__(self, sheets = None, tweet = None):
         super().__init__() 
         self.tweet = tweet
         self.classes = constants.CLASSES

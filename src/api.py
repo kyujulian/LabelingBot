@@ -78,13 +78,16 @@ class Sheet:
     
     def get_unclassified(self):
         unclass_data = self.get_data_without_class()
-        return unclass_data.sample(n=1)
+        if unclass_data.empty:
+            return None
+
+        return unclass_data.sample(n=1)[constants.TWEETCOL].values[0]
 
     def get_data_without_class(self):
         return self.data.loc[self.data['class'] == constants.ENDTOKEN]
 
     
-    def update_sheet(self,range_values="Sheet2",value_input_option="USER_ENTERED"):
+    def update_sheet(self,range_values="Sheet1",value_input_option="USER_ENTERED"):
         values = [self.columns] + self.data.to_numpy().tolist()
 
 
