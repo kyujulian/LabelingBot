@@ -42,10 +42,6 @@ class Sheet:
                 print("No data found.")
                 return
 
-            print("COLUMNS")
-            print(columns)
-            print(read_values)
-
             self.columns = columns
             self.data = pd.DataFrame(columns=columns, data=read_values)
             self.data[constants.CLASSCOL]  = self.data[constants.CLASSCOL].fillna(constants.ENDTOKEN)
@@ -65,42 +61,32 @@ class Sheet:
         self.data.sort_values(by=['class'],inplace=True)
         print("Sorting values on sheets")
         try:
-            self.update_values(self.parse_for_output(),range_values=range_values)
+            self.update_sheet(self.parse_for_output(),range_values=range_values)
         except HTTPError as err:
             print(err)
 
 
             
-    def parse_output(self):
-        output = [self.columns] + self.data.to_numpy()
-        return output
         
-    def add_and_write(self, tweet, classification, range_values="Sheet1"):
-        tweet_row = self.data.loc[self.data[constants.TWEETCOL == tweet]]
-        print(tweet_row)
-        tweet_row['class'] = classification
+    def add_and_write(self, tweet_index, classification, range_values="Sheet1"):
+        #NEEDTOFIXTHIS
+        to_replace = self.data[self.data[constants.TWEETCOL] == tweet_index].index
+        self.data.loc[to_replace,constants.CLASSCOL] = classification
+
+        self.update_sheet()
 
     
     def get_unclassified(self):
         unclass_data = self.get_data_without_class()
-        return unclass_data[0][self.columns[0]]
+        return unclass_data.sample(n=1)
 
     def get_data_without_class(self):
-        return self.data.loc[self.data['class'] == '']
+        return self.data.loc[self.data['class'] == constants.ENDTOKEN]
 
     
-    def filter_classified(self):
-        new_data = self.parse_for_output()
-        new_data = filter(lambda x: x[-1] != constants.ENDTOKEN, new_data) 
-        return new_data
-    
-    def update_with_class(self):
-        new_data = list(self.filter_classified())
-        print('NEW DATA')
-        print(new_data)
-        self.update_values(new_data, range_values="Sheet2")
+    def update_sheet(self,range_values="Sheet2",value_input_option="USER_ENTERED"):
+        values = [self.columns] + self.data.to_numpy().tolist()
 
-    def update_values(self,values,range_values="Sheet1",value_input_option="USER_ENTERED"):
 
         for value in values:
             if value[1] == constants.ENDTOKEN:
