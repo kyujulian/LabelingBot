@@ -12,31 +12,6 @@ from googleapiclient.errors import HttpError
 
 from api import Sheet
 
-def update_values(spreadsheet_id, range_name, value_input_option, _values):
-
-    for value in _values:
-        if value[1] == constants.ENDTOKEN:
-            value[1] = ""
-            
-    try:
-        service = build('sheets', 'v4', credentials=constants.CREDS)
-        body = {
-            "values" : _values
-        }
-
-        result = service.spreadsheets().values().update(
-            spreadsheetId=spreadsheet_id,
-            range=range_name,
-            valueInputOption=value_input_option,
-            body=body
-        ).execute()
-        print('{0} cells updated.'.format(result.get('updatedCells')))
-        return result
-    except HttpError as error:
-        print(f"An error occured: {error}")
-        return error
-
-
 def validateToken(creds, scopes):
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
@@ -58,14 +33,7 @@ def main():
     validateToken(constants.CREDS,constants.SCOPES)
 
     sheet = Sheet(constants.SPREADSHEET_ID, range_values="Sheet1")
-    # sheet.data.sort_values(by=['class'])
-    # print(sheet.data)
-    # sheet.add_and_write('THIS A TWEET', 'positive')
-    # sheet.update_sheet()
-    # sheet.update_with_class()
 
-    # print("AFTERAFTERAFTER")
-    # print(sheet.data)
     print("running bot");
 
     bot.run(sheet)

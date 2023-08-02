@@ -12,9 +12,12 @@ SAMPLE_RANGE_NAME = 'A1:B5'
 
 ENDTOKEN = "~EOF"
 
-MAXVOTES = 1
+MAXVOTES = 2
+
+DATA_DIR = os.path.join(os.getcwd(), "data")
 
 
+LABELED = 'labeled'
 
 #?
 TWEETCOL = "Tweet"

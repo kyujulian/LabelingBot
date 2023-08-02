@@ -1,0 +1,6 @@
+.env
+semiosheets
+__pycache__
+logs
+token.json
+credentials.json

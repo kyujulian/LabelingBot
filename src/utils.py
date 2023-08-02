@@ -1,31 +1,23 @@
-from requests import HTTPError
+# from requests import HTTPError
 import constants
-import api
-
-def sort(data, spreadsheet_id = constants.SPREADSHEET_ID, range_name = "Sheet1"):
-    print("Sorting values on sheets");
-    #FIX row length
-    data.sort(key=lambda x: x[1])
-    try:
-        api.update_values(spreadsheet_id, range_name, "USER_ENTERED", data)
-    except HTTPError as err:
-        print(err)
+import numpy as np
+import pandas as pd
+# import api
 
 
-def validate_input(data):
+def get_sheet_id(url):
+    url = url.split("/")
+    sheet_id = url[3]
+    return sheet_id
 
-    counter = 0
-    for row in data:
-        #FIX row length
-        if len(row) < 2:
-            row.append(constants.ENDTOKEN)
-        elif row[-1] not in constants.CLASSES:
-            row[-1] = constants.ENDTOKEN
 
-        elif (len(row) > constants.MAXCOL):
-            raise Exception(f"""
-                            Sheet misconfigured, error in row {counter} \n
-                            row was expected to have  {constants.MAXCOL} columns, it has {len(row)}
-                            """)
-        
-        counter +=1
+def initialize_empty_voting(data):
+    _classes = np.zeros( shape=(len(data), len(constants.CLASSES)), dtype=int )
+    labeled = data[constants.CLASSCOL] != constants.ENDTOKEN
+    labeled.name = "labeled"
+    
+    print(labeled)
+    columns = constants.CLASSES  
+    _classes_df = pd.DataFrame(columns=constants.CLASSES, data=_classes)
+
+    return pd.concat([data, _classes_df,labeled],axis=1)
