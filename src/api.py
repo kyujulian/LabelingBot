@@ -36,7 +36,6 @@ class Sheet:
         try:
             self.load_sheet( sheet_id, range_values)
 
-
             self.set_voting()
 
 
@@ -67,7 +66,7 @@ class Sheet:
             #checks if voting data already exists
             if os.path.exists(voting_dir) and not new: 
                 print("Updating voting data")
-                self.voting_data = update_voting(self.data, self.vote_data)
+                self.vote_data = update_voting(self.data, self.vote_data)
             
             else:
                 self.init_voting_data()
@@ -75,10 +74,11 @@ class Sheet:
     def reload(self, new=False):
 
         self.load_sheet(self.sheet_id, self.range)
-        if len(self.data) < len(self.voting_data):
+        if len(self.data) < len(self.vote_data):
             print("Some tweet got deleted from the data, so all the votes need to be reloaded")
+            self.init_voting_data()
 
-        self.update_voting(new=False)
+        self.update_voting(new=new)
         
     def load_sheet(self, sheet_id, range_values):
 
@@ -206,8 +206,13 @@ class Sheet:
                 break
         
         if(need_update):
+
             print("setting vote")
+            print(self.data)
+            print(self.vote_data)
+
             self.data.loc[self.vote_data[constants.TWEETCOL] == tweet, constants.CLASSCOL] = vote_class
+            self.vote_data.loc[self.vote_data[constants.TWEETCOL] == tweet, constants.CLASSCOL] = vote_class
             self.vote_data.loc[self.vote_data[constants.TWEETCOL] == tweet, constants.LABELED] = True
             self.vote_data.to_csv(os.path.join(constants.DATA_DIR, f"voting_id_{self.sheet_id}.csv"), index=False)
 

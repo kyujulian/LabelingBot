@@ -76,13 +76,15 @@ def run(sheet):
             await ctx.send("Todos os tweets foram classificados!")
             return
 
-        view = ButtonView(tweet=tweet, sheets=sheet, users_position=users_position, user_id = ctx.author.id)
-        await ctx.send(f"Classifique o tweet: \n\n {tweet} \n\n ", view=view)
+        view = ButtonView(ctx=ctx, tweet=tweet, sheets=sheet, users_position=users_position, user_id = ctx.author.id, timeout=constants.TIMEOUT)
+        content = await ctx.send(f"Classifique o tweet: \n\n {tweet} \n\n ", view=view)
+        view.content = content
+        await view.wait()
 
     @client.tree.command(description="reload the spreadsheet", name="reload")
-    async def reload(interaction: discord.Interaction):
+    async def reload(interaction: discord.Interaction, full: bool = False):
         message = "reloaded spreadsheet"
-        sheet.reload()
+        sheet.reload(new=full)
         await interaction.response.send_message(message)
 
     client.run(os.getenv('DISCORD_API_TOKEN'))
@@ -92,8 +94,9 @@ def run(sheet):
 
 class ButtonView(discord.ui.View):
 
-    def __init__(self, sheets = None, tweet = None, users_position=None, user_id = None):
-        super().__init__() 
+    def __init__(self,ctx, sheets = None, tweet = None, users_position=None, user_id = None, timeout: float = 120):
+        super().__init__(timeout=timeout) 
+        self.ctx = ctx
         self.tweet = tweet
         self.user_id = user_id
         self.classes = constants.CLASSES
@@ -113,17 +116,17 @@ class ButtonView(discord.ui.View):
             button.callback = partial(self.click_button,chosen_class=button.label)
             self.add_item(button)
         
-    async def disable_all_items(self, chosen_class):
-        self.sheets.add_and_write(self.tweet,chosen_class)
-        for item in self.buttons:
-            item.disable = True
+    async def disable_all_items(self):
+        for item in self.children:
+            item.disabled = True
+
+        await self.content.edit(view=self)
+
     
+    async def on_timeout(self):
+        await self.disable_all_items()
+
     async def click_button(self,interaction: discord.Interaction,chosen_class: str):
-        # for button_value in self.button_count.values():
-        #     if button_value >= constants.MAXVOTES:
-        #         self.sheets.check_votes(self.tweet)
-        #         await self.disable_all_items(chosen_class)
-        #         return
 
         if interaction.user.id in self.users:
             await interaction.response.send_message("Você já votou!", ephemeral=True)
@@ -134,9 +137,12 @@ class ButtonView(discord.ui.View):
         updated = self.sheets.check_votes(self.tweet)
 
         self.users.append(interaction.user.id)
+
         if updated:
             default_message = "Votos contados \n"; 
-            vote_message = f"Classe do tweet definida com {constants.MAXVOTES} votos: \n` {self.tweet} ` : `{chosen_class}` \n\n"
+            vote_message = f"Classe do tweet definida com {constants.MAXVOTES} votos: \n`Tweet: {self.tweet} ` : classe: `{chosen_class}` \n\n"
+
+            await self.disable_all_items()
             await interaction.response.send_message(default_message + vote_message)
             return
                 

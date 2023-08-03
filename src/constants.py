@@ -19,6 +19,7 @@ DATA_DIR = os.path.join(os.getcwd(), "data")
 
 LABELED = 'labeled'
 
+TIMEOUT= 120
 #?
 TWEETCOL = "Tweet"
 CLASSCOL = "class"
