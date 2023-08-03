@@ -6,27 +6,31 @@ import os
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-# The ID and range of a sample spreadsheet.
+# Spreadsheet config.
 SPREADSHEET_ID = '1DRVXSrhTQDCk3vX93uCMI706GA9It2WGxu-7r6_Bs7o'
 SAMPLE_RANGE_NAME = 'A1:B5'
 
+#directories
+DATA_DIR = os.path.join(os.getcwd(), "data")
+LOG_DIR = os.path.join(os.getcwd(), "logs")
+
+
+#dataframe manipulation
+LABELED = 'labeled'
 ENDTOKEN = "~EOF"
 
-MAXVOTES = 2
 
-DATA_DIR = os.path.join(os.getcwd(), "data")
-
-
-LABELED = 'labeled'
-
-TIMEOUT= 120
-#?
+#Data Settings
+CLASSES = ["positivo", "negativo", "neutro", "irrelevante"]
 TWEETCOL = "Tweet"
 CLASSCOL = "class"
-#FIX
-MAXCOL = 2
 
-CLASSES = ["positivo", "negativo", "neutro", "irrelevante"]
+#General settings
+MAXVOTES = 2
+
+#Bot settings
+TIMEOUT= 120 #Tempo de expera da votação
+
 
 CREDS = None
 # The file token.json stores the user's access and refresh tokens, and is

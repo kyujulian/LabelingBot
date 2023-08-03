@@ -34,6 +34,9 @@ def main():
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR)
 
+    if not os.path.exists(constants.LOG_DIR):
+        os.makedirs(constants.LOG_DIR)
+
     validateToken(constants.CREDS,constants.SCOPES)
 
     sheet = Sheet(constants.SPREADSHEET_ID, range_values="Sheet1")
