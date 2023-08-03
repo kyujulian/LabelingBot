@@ -79,6 +79,12 @@ def run(sheet):
         view = ButtonView(tweet=tweet, sheets=sheet, users_position=users_position, user_id = ctx.author.id)
         await ctx.send(f"Classifique o tweet: \n\n {tweet} \n\n ", view=view)
 
+    @client.tree.command(description="reload the spreadsheet", name="reload")
+    async def reload(interaction: discord.Interaction):
+        message = "reloaded spreadsheet"
+        sheet.reload()
+        await interaction.response.send_message(message)
+
     client.run(os.getenv('DISCORD_API_TOKEN'))
 
 

@@ -14,7 +14,7 @@ from requests import HTTPError
 import pandas as pd
 import numpy as np
 
-from utils import initialize_empty_voting
+from utils import initialize_empty_voting, update_voting
 
 #locals
 import constants
@@ -32,6 +32,7 @@ class Sheet:
         sheet_id,
         range_values
     ):
+        self.sheet_id = sheet_id
         try:
             self.load_sheet( sheet_id, range_values)
 
@@ -47,7 +48,7 @@ class Sheet:
 
     
     def set_voting(self, new=False):
-            voting_dir = os.path.join(constants.DATA_DIR, "voting_data.csv")
+            voting_dir = os.path.join(constants.DATA_DIR, f"voting_id_{self.sheet_id}.csv")
             #checks if voting data already exists
             if os.path.exists(voting_dir) and not new: 
                 print("Voting data already exists, loading from file")
@@ -55,10 +56,29 @@ class Sheet:
             
             else:
                 self.init_voting_data()
+    
+    def update_voting_data(self):
+        updated_data = update_voting(self.data, self.vote_data)
+        print("UPDATED DATA: \n", updated_data)
 
-    def reload(self):
+
+    def update_voting(self, new=False):
+            voting_dir = os.path.join(constants.DATA_DIR, f"voting_id_{self.sheet_id}.csv")
+            #checks if voting data already exists
+            if os.path.exists(voting_dir) and not new: 
+                print("Updating voting data")
+                self.voting_data = update_voting(self.data, self.vote_data)
+            
+            else:
+                self.init_voting_data()
+
+    def reload(self, new=False):
+
         self.load_sheet(self.sheet_id, self.range)
-        self.set_voting(new=True)
+        if len(self.data) < len(self.voting_data):
+            print("Some tweet got deleted from the data, so all the votes need to be reloaded")
+
+        self.update_voting(new=False)
         
     def load_sheet(self, sheet_id, range_values):
 
@@ -79,16 +99,13 @@ class Sheet:
 
             self.columns = columns
             self.data = pd.DataFrame(columns=columns, data=[val for val in read_values if len(val) > 0])
-            self.vote_data = pd.DataFrame(columns=columns, data=read_values)
 
             self.clean()
-    
-    def reload(self):
-        self.load_sheet(self.sheet_id, self.range)
 
 
     def set_sheet_id(self, id) :
         self.sheet_id = id
+        self.reload(new_sheet=True)
 
     def clean(self):
             self.data[constants.CLASSCOL]  = self.data[constants.CLASSCOL].fillna(constants.ENDTOKEN)
@@ -98,8 +115,9 @@ class Sheet:
 
     def init_voting_data(self):
         print("Initializing voting data")
+        self.vote_data = self.data.copy()
         self.vote_data = initialize_empty_voting(self.data)
-        self.vote_data.to_csv(os.path.join(constants.DATA_DIR, "voting_data.csv"), index=False)
+        self.vote_data.to_csv(os.path.join(constants.DATA_DIR, f"voting_id_{self.sheet_id}.csv"), index=False)
 
 
 
@@ -124,7 +142,6 @@ class Sheet:
     
     def get_unclassified(self, user_position = 0):
         unclass_data = self.get_data_without_class()
-
         if unclass_data.empty:
             return None
 
@@ -170,7 +187,7 @@ class Sheet:
     def vote(self, tweet, className):
         print(f"Voting for {tweet} with {className}")
         self.vote_data.loc[self.vote_data[constants.TWEETCOL] == tweet, className] += 1
-        self.vote_data.to_csv(os.path.join(constants.DATA_DIR, "voting_data.csv"), index=False)
+        self.vote_data.to_csv(os.path.join(constants.DATA_DIR, f"voting_id_{self.sheet_id}.csv"), index=False)
         
     def check_votes(self, tweet):
 
@@ -192,7 +209,7 @@ class Sheet:
             print("setting vote")
             self.data.loc[self.vote_data[constants.TWEETCOL] == tweet, constants.CLASSCOL] = vote_class
             self.vote_data.loc[self.vote_data[constants.TWEETCOL] == tweet, constants.LABELED] = True
-            self.vote_data.to_csv(os.path.join(constants.DATA_DIR, "voting_data.csv"), index=False)
+            self.vote_data.to_csv(os.path.join(constants.DATA_DIR, f"voting_id_{self.sheet_id}.csv"), index=False)
 
             self.update_sheet()
 
