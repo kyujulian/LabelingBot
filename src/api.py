@@ -121,13 +121,6 @@ class Sheet:
 
 
 
-    def sort(self,range_values="Sheet1"):
-        self.data.sort_values(by=['class'],inplace=True)
-        print("Sorting values on sheets")
-        try:
-            self.update_sheet(self.parse_for_output(),range_values=range_values)
-        except HTTPError as err:
-            print(err)
 
 
             
@@ -149,7 +142,6 @@ class Sheet:
         return unclass_data[constants.TWEETCOL].values[user_position % len(unclass_data)]
 
     def get_data_without_class(self):
-        print(self.data)
         return self.data.loc[self.data[constants.CLASSCOL] == constants.ENDTOKEN]
 
     
@@ -198,7 +190,8 @@ class Sheet:
             element = self.vote_data.loc[self.vote_data[constants.TWEETCOL] == tweet]
             count = element[className].reset_index(drop=True)[0]
 
-            print("Count: \n", count)
+            #debug
+            #print("Count: \n", count)
 
             if count >= constants.MAXVOTES:
                 vote_class = className
@@ -208,8 +201,6 @@ class Sheet:
         if(need_update):
 
             print("setting vote")
-            print(self.data)
-            print(self.vote_data)
 
             self.data.loc[self.vote_data[constants.TWEETCOL] == tweet, constants.CLASSCOL] = vote_class
             self.vote_data.loc[self.vote_data[constants.TWEETCOL] == tweet, constants.CLASSCOL] = vote_class
