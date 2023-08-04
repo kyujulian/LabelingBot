@@ -135,6 +135,7 @@ class ButtonView(discord.ui.View):
         self.sheets.vote(self.tweet, chosen_class)
         self.users_position.increment_pos(self.user_id)
         await interaction.response.defer()
+
         updated = self.sheets.check_votes(self.tweet)
 
         self.users.append(interaction.user.id)
@@ -153,5 +154,5 @@ class ButtonView(discord.ui.View):
                 return
         
                 
-        await interaction.response.send_message("Seu voto foi contado!", ephemeral=True)
+        await self.ctx.send("Seu voto foi contado!", ephemeral=True)
 
