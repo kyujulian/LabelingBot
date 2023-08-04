@@ -1,9 +1,14 @@
 import pathlib
 import os
 import logging
+import constants
 from logging.config import dictConfig
 from dotenv import load_dotenv
 import discord
+
+if not os.path.exists(constants.LOG_DIR):
+    os.makedirs(constants.LOG_DIR)
+
 
 load_dotenv()
 

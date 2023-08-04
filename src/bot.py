@@ -18,7 +18,6 @@ import settings
 import discord
 
 
-
 class UserPos:
     def __init__(self):
         self.user_position = {}
