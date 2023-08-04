@@ -27,15 +27,14 @@ def validateToken(creds, scopes):
 
 def main():
     global CREDS
-    """Shows basic usage of the Sheets API.
-    Prints values from a sample spreadsheet.
-    """
+
+    
+    if not os.path.exists(constants.LOG_DIR):
+        os.makedirs(constants.LOG_DIR)
 
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR)
 
-    if not os.path.exists(constants.LOG_DIR):
-        os.makedirs(constants.LOG_DIR)
 
     validateToken(constants.CREDS,constants.SCOPES)
 
