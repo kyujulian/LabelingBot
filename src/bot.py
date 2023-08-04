@@ -134,7 +134,7 @@ class ButtonView(discord.ui.View):
 
         self.sheets.vote(self.tweet, chosen_class)
         self.users_position.increment_pos(self.user_id)
-        interaction.response.defer()
+        await interaction.response.defer()
         updated = self.sheets.check_votes(self.tweet)
 
         self.users.append(interaction.user.id)
