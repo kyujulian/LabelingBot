@@ -112,7 +112,7 @@ class Sheet:
 
             
         
-    def add_and_write(self, tweet_index, classification, range_values="Sheet1"):
+    def add_and_write(self, tweet_index, classification, range_values=constants.SPREADSHEET_PAGE):
         #NEEDTOFIXTHIS
         to_replace = self.data[self.data[constants.TWEETCOL] == tweet_index].index
         self.data.loc[to_replace,constants.CLASSCOL] = classification
@@ -132,7 +132,7 @@ class Sheet:
         return self.data.loc[self.data[constants.CLASSCOL] == constants.ENDTOKEN]
 
     
-    def update_sheet(self,data=None,range_values="Sheet1",value_input_option="USER_ENTERED"):
+    def update_sheet(self,data=None,range_values=constants.SPREADSHEET_PAGE,value_input_option="USER_ENTERED"):
 
         if (data is None):
             data = self.data

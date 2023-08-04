@@ -29,8 +29,6 @@ def main():
     global CREDS
 
     
-    if not os.path.exists(constants.LOG_DIR):
-        os.makedirs(constants.LOG_DIR)
 
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR)
@@ -38,7 +36,7 @@ def main():
 
     validateToken(constants.CREDS,constants.SCOPES)
 
-    sheet = Sheet(constants.SPREADSHEET_ID, range_values="Sheet1")
+    sheet = Sheet(constants.SPREADSHEET_ID, range_values=constants.SPREADHSHEET_PAGE)
 
     print("running bot");
 

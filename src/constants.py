@@ -8,7 +8,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # Spreadsheet config.
 SPREADSHEET_ID = '1RH86GGQTkO5yWfFz-l_mrSQXFgdsTk3GSHplfcA3D_k'
-SAMPLE_RANGE_NAME = 'A1:B5'
+SPREADSHEET_PAGE = 'Sheet1'
 
 #directories
 DATA_DIR = os.path.join(os.getcwd(), "data")
