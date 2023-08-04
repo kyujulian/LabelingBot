@@ -145,7 +145,8 @@ class ButtonView(discord.ui.View):
                 asyncio.create_task(interaction.response.send_message(default_message + vote_message)),
                 asyncio.create_task(self.disable_all_items())
                 ]
-            done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
+            done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+
             if (done):
                 return
         
