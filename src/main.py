@@ -28,8 +28,6 @@ def validateToken(creds, scopes):
 def main():
     global CREDS
 
-    
-
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR)
 

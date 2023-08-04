@@ -35,7 +35,6 @@ class Sheet:
         self.sheet_id = sheet_id
         try:
             self.load_sheet( sheet_id, range_values)
-
             self.set_voting()
 
 
@@ -47,14 +46,20 @@ class Sheet:
 
     
     def set_voting(self, new=False):
-            voting_dir = os.path.join(constants.DATA_DIR, f"voting_id_{self.sheet_id}.csv")
-            #checks if voting data already exists
-            if os.path.exists(voting_dir) and not new: 
-                print("Voting data already exists, loading from file")
-                self.vote_data = pd.read_csv(voting_dir)
-            
-            else:
+        voting_dir = os.path.join(constants.DATA_DIR, f"voting_id_{self.sheet_id}.csv")
+        #checks if voting data already exists
+        
+        if os.path.exists(voting_dir) and not new:  
+            print("Voting data already exists, loading from file")
+            self.vote_data = pd.read_csv(voting_dir)
+            new_columns = False
+
+            #checks if the number of columns is correct
+            if ( len(self.data.columns) + len(constants.CLASSES) + 1 ) != len(self.vote_data.columns):
                 self.init_voting_data()
+        
+        else:
+            self.init_voting_data()
     
     def reload(self, new=False):
 
@@ -64,7 +69,6 @@ class Sheet:
     def load_sheet(self, sheet_id, range_values):
 
             service = build("sheets", "v4", credentials=constants.CREDS)
-
             # Call the Sheets API
             sheet = service.spreadsheets()
             result = sheet.values().get(spreadsheetId=sheet_id,
@@ -187,7 +191,7 @@ class Sheet:
         
         if(need_update):
 
-            print("setting vote")
+            print("Setting new class")
 
 
             self.data.loc[self.vote_data[constants.TWEETCOL] == tweet, constants.CLASSCOL] = vote_class
