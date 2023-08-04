@@ -71,12 +71,18 @@ class Sheet:
                                         range=range_values).execute()
             read_values = result.get("values", [])
 
-            columns, read_values = read_values[0], read_values[1:]
-
-
             if not(read_values):
                 print("No data found.")
                 return
+
+            columns, read_values = read_values[0], read_values[1:]
+
+            #hack to get the right number of columns in the dataframe
+            if(len(read_values[0]) < len(columns)):
+                read_values[0].append("")
+
+
+
 
             self.columns = columns
             self.data = pd.DataFrame(columns=columns, data=[val for val in read_values if len(val) > 0])
