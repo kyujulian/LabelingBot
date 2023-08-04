@@ -3,7 +3,7 @@
 
 _TODO_
  - ~Comando para escolher outra(s) planilha~
- - Timeout no comando de votar
+ - ~Timeout no comando de votar~
  - ~Abstrair dados para permitir "votação offline"~
- - Refinar a interface do bot
+ - ~Refinar a interface do bot~
  - Jogar tudo num container em Docker
