@@ -19,10 +19,10 @@ def validateToken(creds, scopes):
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', scopes)
+                os.path.join(os.getcwd(),'credentials.json'), scopes)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('token.json', 'w') as token:
+        with open(os.path.join(os.getcwd(),'token.json'), 'w') as token:
             token.write(creds.to_json())
 
 def main():
