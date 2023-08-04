@@ -15,9 +15,8 @@ import constants
 import settings
 # This example requires the 'message_content' intent.
 
-
-logger = settings.logging.getLogger("bot")
 import discord
+
 
 
 class UserPos:
@@ -40,6 +39,7 @@ def run(sheet):
     sheet = sheet
     client = commands.Bot(command_prefix='$',intents=intents)
     users_position = UserPos()
+    logger = settings.logging.getLogger("bot")
 
     @client.event
     async def on_ready():
