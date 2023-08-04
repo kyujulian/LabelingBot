@@ -87,6 +87,19 @@ def run(sheet):
         sheet.reload(new=full)
         await interaction.response.send_message(message)
 
+    @client.tree.command(description="Get data info", name="info")
+    async def info(interaction: discord.Interaction):
+        len_data = sheet.data.shape[0]
+        len_classified = sheet.get_data_without_class().shape[0]
+        message = f"""
+Numero Total de Tweets: `{len_data}`\n
+Numero de Tweets Classificados: `{len_data - len_classified}`\n
+Quantidade de Tweets a serem classificados: `{len_classified}`\n
+Quantidade de Classes: `{len(constants.CLASSES)}`\n
+Classes: `{constants.CLASSES}`\n
+        """
+        await interaction.response.send_message(message)
+
     client.run(os.getenv('DISCORD_API_TOKEN'))
 
 
