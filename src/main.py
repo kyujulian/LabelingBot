@@ -36,7 +36,7 @@ def main():
 
     validateToken(constants.CREDS,constants.SCOPES)
 
-    sheet = Sheet(constants.SPREADSHEET_ID, range_values=constants.SPREADHSHEET_PAGE)
+    sheet = Sheet(constants.SPREADSHEET_ID, range_values=constants.SPREADSHEET_PAGE)
 
     print("running bot");
 
