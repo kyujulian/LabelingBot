@@ -145,8 +145,10 @@ class ButtonView(discord.ui.View):
                 asyncio.create_task(interaction.response.send_message(default_message + vote_message)),
                 asyncio.create_task(self.disable_all_items())
                 ]
-            done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
-            return
+            done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
+            if (done):
+                return
+        
                 
         await interaction.response.send_message("Seu voto foi contado!", ephemeral=True)
 
