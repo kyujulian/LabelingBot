@@ -14,7 +14,7 @@ from requests import HTTPError
 import pandas as pd
 import numpy as np
 
-from utils import initialize_empty_voting, update_voting
+from utils import initialize_empty_voting
 
 #locals
 import constants
@@ -56,30 +56,11 @@ class Sheet:
             else:
                 self.init_voting_data()
     
-    def update_voting_data(self):
-        updated_data = update_voting(self.data, self.vote_data)
-        print("UPDATED DATA: \n", updated_data)
-
-
-    def update_voting(self, new=False):
-            voting_dir = os.path.join(constants.DATA_DIR, f"voting_id_{self.sheet_id}.csv")
-            #checks if voting data already exists
-            if os.path.exists(voting_dir) and not new: 
-                print("Updating voting data")
-                self.vote_data = update_voting(self.data, self.vote_data)
-            
-            else:
-                self.init_voting_data()
-
     def reload(self, new=False):
 
         self.load_sheet(self.sheet_id, self.range)
-        if len(self.data) < len(self.vote_data):
-            print("Some tweet got deleted from the data, so all the votes need to be reloaded")
-            self.init_voting_data()
+        self.init_voting_data()
 
-        self.update_voting(new=new)
-        
     def load_sheet(self, sheet_id, range_values):
 
             service = build("sheets", "v4", credentials=constants.CREDS)
@@ -105,7 +86,7 @@ class Sheet:
 
     def set_sheet_id(self, id) :
         self.sheet_id = id
-        self.reload(new_sheet=True)
+        self.reload(new=True)
 
     def clean(self):
             self.data[constants.CLASSCOL]  = self.data[constants.CLASSCOL].fillna(constants.ENDTOKEN)
@@ -149,12 +130,12 @@ class Sheet:
 
         if (data is None):
             data = self.data
+        
 
-        values = [self.columns] + self.data.to_numpy().tolist()
+        self.update_data = self.data.copy()
+        self.update_data.loc[self.data[constants.CLASSCOL] == constants.ENDTOKEN, constants.CLASSCOL] = ""
 
-        for value in values:
-            if value[1] == constants.ENDTOKEN:
-                value[1] = ""
+        values = [self.columns] + self.update_data.to_numpy().tolist()
                 
         try:
             service = build('sheets', 'v4', credentials=constants.CREDS)
@@ -202,9 +183,11 @@ class Sheet:
 
             print("setting vote")
 
+
             self.data.loc[self.vote_data[constants.TWEETCOL] == tweet, constants.CLASSCOL] = vote_class
             self.vote_data.loc[self.vote_data[constants.TWEETCOL] == tweet, constants.CLASSCOL] = vote_class
             self.vote_data.loc[self.vote_data[constants.TWEETCOL] == tweet, constants.LABELED] = True
+
             self.vote_data.to_csv(os.path.join(constants.DATA_DIR, f"voting_id_{self.sheet_id}.csv"), index=False)
 
             self.update_sheet()

@@ -1,5 +1,6 @@
 import discord
 import os
+import asyncio
 from discord.ext import commands
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -77,7 +78,7 @@ def run(sheet):
             return
 
         view = ButtonView(ctx=ctx, tweet=tweet, sheets=sheet, users_position=users_position, user_id = ctx.author.id, timeout=constants.TIMEOUT)
-        content = await ctx.send(f"Classifique o tweet: \n\n {tweet} \n\n ", view=view)
+        content = await ctx.send(f"Classifique o tweet: \n ``` \n {tweet} \n ```\n ", view=view)
         view.content = content
         await view.wait()
 
@@ -140,10 +141,12 @@ class ButtonView(discord.ui.View):
 
         if updated:
             default_message = "Votos contados \n"; 
-            vote_message = f"Classe do tweet definida com {constants.MAXVOTES} votos: \n`Tweet: {self.tweet} ` : classe: `{chosen_class}` \n\n"
-
-            await self.disable_all_items()
-            await interaction.response.send_message(default_message + vote_message)
+            vote_message = f"Classe do tweet definida com {constants.MAXVOTES} votos: \n*`Tweet:`* \n  ```{self.tweet} ``` \n  *`classe`*: `{chosen_class}` \n\n"
+            tasks = [
+                asyncio.create_task(interaction.response.send_message(default_message + vote_message)),
+                asyncio.create_task(self.disable_all_items())
+                ]
+            done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
             return
                 
         await interaction.response.send_message("Seu voto foi contado!", ephemeral=True)

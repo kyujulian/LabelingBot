@@ -7,7 +7,7 @@ import os
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # Spreadsheet config.
-SPREADSHEET_ID = '1DRVXSrhTQDCk3vX93uCMI706GA9It2WGxu-7r6_Bs7o'
+SPREADSHEET_ID = '1RH86GGQTkO5yWfFz-l_mrSQXFgdsTk3GSHplfcA3D_k'
 SAMPLE_RANGE_NAME = 'A1:B5'
 
 #directories
@@ -22,8 +22,8 @@ ENDTOKEN = "~EOF"
 
 #Data Settings
 CLASSES = ["positivo", "negativo", "neutro", "irrelevante"]
-TWEETCOL = "Tweet"
-CLASSCOL = "class"
+TWEETCOL = "Text"
+CLASSCOL = "Class"
 
 #General settings
 MAXVOTES = 2
