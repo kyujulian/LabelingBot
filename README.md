@@ -66,7 +66,7 @@ DISCORD_API_TOKEN=insira_o_token_aqui
 ### Acessando o id da planilha
 Ao abrir uma planilha no google sheets, a url é gerada, com a seguinte estrutura:
 
-https://docs.google.com/spreadsheets/d/*essetextoehoseuid*/edit?hl=pt-br#gid=0
+docs.google.com/spreadsheets/d/ *essetextoehoseuid* /edit?hl=pt-br#gid=0
 
 copie o id e cole no lugar da variável `SPREADSHEET_ID`, de acordo com o exemplo abaixo.
 
@@ -95,8 +95,8 @@ $ python3 src/main.py
 
 
 ## no discord
-`/info` Para listar as características da planilha atual
-`vote` Para votar em uma amostra.
+- `/info` Para listar as características da planilha atual
+- `vote` Para votar em uma amostra.
 
 _TODO_
  - ~Comando para escolher outra(s) planilha~
