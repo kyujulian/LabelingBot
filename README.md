@@ -42,9 +42,9 @@ Click em 'Fazer Download do json'
 
 
 ## Passo 3
-![[https://github.com/kyujulian/LabelingBot/blob/master/readme/download_client.png]]
+![client download screen](https://github.com/kyujulian/LabelingBot/blob/master/readme/download_client.png)
 
-![[https://github.com/kyujulian/LabelingBot/blob/master/readme/rename.png]]
+![client name screen](https://github.com/kyujulian/LabelingBot/blob/master/readme/rename.png)
 
 Agora, você deve renomear o arquivo para 'credentials.json' e movê-lo para o diretório principal em que você clonou o repositório. ( ...LabelingBot)
 
