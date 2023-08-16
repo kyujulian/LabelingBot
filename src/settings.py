@@ -21,9 +21,12 @@ COGS_DIR = BASE_DIR / "cogs"
 
 VIDEOCMDS_DIR = BASE_DIR / "videocmds"
 
-GUILDS_ID = discord.Object(id=int(os.getenv("GUILD")))
+try :
+    GUILDS_ID = discord.Object(id=int(os.getenv("GUILD")))
+    GUILD_ID_INT = int(os.getenv("GUILD"))
+except:
+    print("GUILD_ID not found, should be on .env file");
 # FEEDBACK_CH = int(os.getenv("FEEDBACK_CH", 0))
-GUILD_ID_INT = int(os.getenv("GUILD"))
 
 LOGGING_CONFIG = {
     "version": 1,
