@@ -1,4 +1,4 @@
-# Um bot do discord para auxiliar classificação manual de dados para algoritmos de ML.
+# Bot discord para auxiliar classificação manual de dados para algoritmos de ML.
 
 Primeiro, navegue até o diretório em que deseja baixar o repositório e insira o seguinte comando:
 
