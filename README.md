@@ -66,7 +66,7 @@ DISCORD_API_TOKEN=insira_o_token_aqui
 ### Acessando o id da planilha
 Ao abrir uma planilha no google sheets, a url é gerada, com a seguinte estrutura:
 
-docs.google.com/spreadsheets/d/ *essetextoehoseuid* /edit?hl=pt-br#gid=0
+docs.google.com /spreadsheets /d/ [**id da planilha**] /edit?hl=pt-br#gid=1
 
 copie o id e cole no lugar da variável `SPREADSHEET_ID`, de acordo com o exemplo abaixo.
 
