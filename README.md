@@ -19,6 +19,7 @@ source discord-bot/bin/activate &&
 python3 -m pip install -r requirements.txt
 ```
 
+# Configurando
 
 Com as dependências instaladas,  resta configurar as interfaces com o Discord e Google Sheets.
 
@@ -27,12 +28,9 @@ Com as dependências instaladas,  resta configurar as interfaces com o Discord e
 As instruções nativas podem ser encontradas em: https://developers.google.com/workspace/guides/configure-oauth-consent
 
 
-# Passo 1
+## Passo 1
 
 Com uma conta no Google, crie um projeto Google Cloud [neste link](https://developers.google.com/workspace/guides/create-project) .
-
-
-~missing some steps here~
 
 ## Passo 2
 
@@ -43,15 +41,20 @@ Em seguida, crie as [credenciais do cliente ID do OAuth.](https://developers.goo
 Click em 'Fazer Download do json'
 
 
-![[./readme/download_client.png]]
+## Passo 3
+![[https://github.com/kyujulian/LabelingBot/blob/master/readme/download_client.png]]
 
-![[./readme/rename.png]]
+![[https://github.com/kyujulian/LabelingBot/blob/master/readme/rename.png]]
 
 Agora, você deve renomear o arquivo para 'credentials.json' e movê-lo para o diretório principal em que você clonou o repositório. ( ...LabelingBot)
 
 
 Com essa parte fora do caminho. Resta criar o bot no discord.
 
+## Discord Bot
+
+
+# Uso
 _TODO_
  - ~Comando para escolher outra(s) planilha~
  - ~Timeout no comando de votar~
