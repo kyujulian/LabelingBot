@@ -56,8 +56,8 @@ Siga as instruções [neste link](https://discordpy.readthedocs.io/en/stable/dis
 
 Com o bot criado, vá até a aba 'bot', sob aplicação, e gere um token.
 Este token deverá ser inserido em:
-```
-[//]: # (.env)
+```[bash]
+# .env
 DISCORD_API_TOKEN=insira_o_token_aqui
 ```
 
